@@ -3,9 +3,7 @@ import style from "./form.module.css";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import useGenerate from "./useGenerate";
 import { useEffect, useState } from "react";
-import { CodeType, DocumentType } from "@/types/generatorData";
-import { DOMImplementation, XMLSerializer } from "xmldom";
-import JsBarcode from "jsbarcode";
+import { FormatE, DocumentType } from "@/types/codeT";
 
 const Form = () => {
   const [codes, setCodes] = useState("");
@@ -28,12 +26,14 @@ const Form = () => {
       <button
         onClick={() => {
           handleGenerate({
-            codeType: CodeType.CODE128,
-            documentType: DocumentType.PDF,
             data: codes.split("\n"),
-            size: {
-              width: 40,
-              height: 20,
+            options: {
+              format: FormatE.CODE128,
+              documentType: DocumentType.PDF,
+              size: {
+                width: 40,
+                height: 20,
+              },
             },
           });
         }}

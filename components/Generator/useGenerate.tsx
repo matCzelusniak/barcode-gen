@@ -1,70 +1,38 @@
 import { useState } from "react";
-import GeneratorData from "@/types/generatorData";
 import Pdf from "@/components/Exporter/pdf";
-import { DocumentType } from "@/types/generatorData";
+import CodeDataI, { CodeOptionsI, FormatE } from "@/types/codeT";
 import Code128 from "@/utils/code/code128";
 import SVG from "react-inlinesvg";
 import { convertSvgToPngBuffer } from "@/services/converter";
+import CodeFactory from "@/utils/code/codeFactory";
+import Code from "@/utils/code/code";
 
 const useGenerate = () => {
   const [pdf, setPdf] = useState<JSX.Element | null>(null);
   const [codesList, setCodesList] = useState<JSX.Element[]>([]);
 
-  const handleGenerate = async (genData: GeneratorData) => {
-    let codesSvgText: string[] = [];
+  const handleGenerate = async (codeData: CodeDataI) => {
     let codesPngBuffer: Buffer[] = [];
     let codesJsx: JSX.Element[] = [];
-    switch (genData.codeType) {
-      case "code128":
-        codesSvgText = generateCode128List(genData);
-        // setTimeout(() => {
-        //   codes.forEach((code) => {
-        //     console.log("code:", renderToStaticMarkup(code));
-        //   });
-        // }, 1000);
-        let promises = [];
-        for (let i = 0; i < codesSvgText.length; i++) {
-          promises.push(convertSvgToPngBuffer(codesSvgText[i]));
-        }
 
-        codesPngBuffer = [...(await Promise.all(promises))];
-
-        for (let i = 0; i < codesSvgText.length; i++) {
-          const buff = new Buffer(codesSvgText[i]);
-          const base64data = buff.toString("base64");
-          codesJsx.push(<SVG key={i} src={codesSvgText[i]} />);
-          codesJsx.push(
-            <img src={`data:image/svg+xml;base64,${base64data}`} alt="" />
-          );
-        }
-        setCodesList(codesJsx);
-        break;
-      default:
-        setCodesList([]);
+    let promisesToPngBuffer = [];
+    for (let i = 0; i < codeData.data.length; i++) {
+      const code: Code = CodeFactory.create(codeData.data[i], codeData.options);
+      codesJsx.push(<SVG key={i} src={code.getSvgString()} />);
+      promisesToPngBuffer.push(code.getPngBuffer());
     }
 
-    switch (data.documentType) {
-      case DocumentType.PDF: {
-        setPdf(generatePDF(codesPngBuffer));
-        break;
-      }
-      default:
-        throw new Error("No export type selected");
-    }
-  };
+    setCodesList(codesJsx);
+    codesPngBuffer = [...(await Promise.all(promisesToPngBuffer))];
 
-  const generateCode128List = (genData: GeneratorData) => {
-    let codes128: string[] = [];
-    for (let i = 0; i < genData.data.length; i++) {
-      codes128.push(Code128(genData.data[i]));
-    }
-    console.log("codes:", codes128);
-    return codes128;
-  };
-
-  const generatePDF = (codes: Buffer[]) => {
-    console.log("codes bef odf:", codes);
-    return <Pdf elements={codes} />;
+    // switch (data.documentType) {
+    //   case DocumentType.PDF: {
+    //     setPdf(generatePDF(codesPngBuffer));
+    //     break;
+    //   }
+    //   default:
+    //     throw new Error("No export type selected");
+    // }
   };
 
   return {

@@ -3,7 +3,7 @@ import Code from "./code";
 import Code128 from "./code128";
 
 abstract class CodeFactory {
-  static createCode(_value: string, _options: CodeOptionsI): Code {
+  static create(_value: string, _options: CodeOptionsI): Code {
     switch (_options.format) {
       case FormatE.CODE128:
         return new Code128(_value, _options);
