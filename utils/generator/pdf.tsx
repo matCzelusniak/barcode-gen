@@ -1,6 +1,7 @@
 import { Document, Page, Image } from "@react-pdf/renderer";
 import Code from "../code/code";
 import File from "./file";
+import { convertMmToPx } from "@/utils/helpers/unit";
 
 class Pdf extends File {
   constructor(_codes: Code[]) {
@@ -22,7 +23,10 @@ class Pdf extends File {
       pages.push(
         <Page key={i}>
           <Image
-            style={{ width: "100px" }}
+            style={{
+              width: `${convertMmToPx(this.codes[i].getSize().width)}px`,
+              height: `${convertMmToPx(this.codes[i].getSize().height)}px`,
+            }}
             src={{ data: codesPngBuffer[i], format: "png" }}
           ></Image>
         </Page>

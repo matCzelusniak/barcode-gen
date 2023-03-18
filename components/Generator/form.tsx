@@ -33,6 +33,8 @@ const Form = () => {
               size: {
                 width: 40,
                 height: 20,
+                svgWidth: 4,
+                svgHeight: 120,
               },
             },
           });

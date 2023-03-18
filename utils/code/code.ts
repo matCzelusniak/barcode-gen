@@ -1,10 +1,12 @@
 import { DOMImplementation, XMLSerializer } from "xmldom";
 import { convertSvgToPngBuffer } from "@/services/converter";
+import { Size } from "@/types/codeT";
 abstract class Code {
   protected xmlSerializer: XMLSerializer;
   protected document: Document;
   protected svgNode: SVGSVGElement;
   protected declare svgString: string;
+  protected declare size: Size;
 
   constructor() {
     this.xmlSerializer = new XMLSerializer();
@@ -27,6 +29,10 @@ abstract class Code {
 
   public getPngBuffer(): Promise<Buffer> {
     return convertSvgToPngBuffer(this.svgString);
+  }
+
+  public getSize(): Size {
+    return this.size;
   }
 }
 

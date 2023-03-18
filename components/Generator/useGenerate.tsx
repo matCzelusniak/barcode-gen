@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Pdf from "@/components/Exporter/pdf";
 import CodeDataI, { CodeOptionsI, FormatE } from "@/types/codeT";
 import SVG from "react-inlinesvg";
 import CodeFactory from "@/utils/code/codeFactory";
@@ -23,31 +22,9 @@ const useGenerate = () => {
 
     setCodesList(codesJsx);
 
-    //temporary use only pdf
     const file: File = FileFactory.create(codeData.options.documentType, codes);
+    //temporary use only pdf
     setPdf(await file.getFile());
-    // switch (data.documentType) {
-    //   case DocumentType.PDF: {
-    //     setPdf(generatePDF(codesPngBuffer));
-    //     break;
-    //   }
-    //   default:
-    //     throw new Error("No export type selected");
-    // }
-  };
-
-  // const generateCode128List = (genData: GeneratorData) => {
-  //   let codes128: string[] = [];
-  //   for (let i = 0; i < genData.data.length; i++) {
-  //     codes128.push(Code128(genData.data[i]));
-  //   }
-  //   console.log("codes:", codes128);
-  //   return codes128;
-  // };
-
-  const generatePDF = (codes: Buffer[]) => {
-    console.log("codes bef odf:", codes);
-    return <Pdf elements={codes} />;
   };
 
   return {

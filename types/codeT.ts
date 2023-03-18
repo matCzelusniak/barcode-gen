@@ -1,6 +1,10 @@
 export interface Size {
+  // in mm for file generator
   width: number;
   height: number;
+  // for JSBarcode
+  svgWidth: number;
+  svgHeight: number;
 }
 
 export enum DocumentType {
