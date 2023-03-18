@@ -20,9 +20,6 @@ class Pdf extends File {
 
     let pages: JSX.Element[] = [];
     for (let i = 0; i < codesPngBuffer.length; i++) {
-      console.log(
-        `jajo width: ${convertMmToPx(this.codes[i].getSize().width)}px`
-      );
       pages.push(
         <Page
           key={i}
