@@ -43,7 +43,7 @@ const Form = () => {
         Generate PDF with Code 128 list - hardcoded size 40x20mm
       </button>
       {isClient && (
-        <PDFDownloadLink document={pdf} fileName="code.pdf">
+        <PDFDownloadLink document={pdf} fileName="codes.pdf">
           {({ blob, url, loading, error }) =>
             loading ? "Loading document..." : "Download now!"
           }

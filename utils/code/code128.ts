@@ -12,7 +12,7 @@ class Code128 extends Code {
       format: "CODE128",
       width: _options.size.svgWidth,
       height: _options.size.svgHeight,
-      fontSize: 45,
+      fontSize: 30,
     });
 
     this.svgString = this.xmlSerializer.serializeToString(this.svgNode);
