@@ -26,7 +26,7 @@ const Form = () => {
       <button
         onClick={() => {
           handleGenerate({
-            data: codes.split("\n"),
+            data: codes.split("\n").filter((txt) => txt !== ""),
             options: {
               format: FormatE.CODE128,
               documentType: DocumentType.PDF,
