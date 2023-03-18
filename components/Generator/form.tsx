@@ -39,17 +39,23 @@ const Form = () => {
             },
           });
         }}
+        disabled={codes === ""}
       >
         Generate PDF with Code 128 list - hardcoded size 40x20mm
       </button>
-      {isClient && (
-        <PDFDownloadLink document={pdf} fileName="codes.pdf">
-          {({ blob, url, loading, error }) =>
-            loading ? "Loading document..." : "Download now!"
-          }
-        </PDFDownloadLink>
-      )}
-      <div className={style.codes}>{codesList}</div>
+      <div>
+        <button>
+          {isClient && (
+            <PDFDownloadLink document={pdf} fileName="codes.pdf">
+              {({ blob, url, loading, error }) =>
+                loading ? "Loading document..." : "Download document now!"
+              }
+            </PDFDownloadLink>
+          )}
+        </button>
+      </div>
+
+      <div className={style.codes}>{codesList.slice(0, 10)}</div>
     </div>
   );
 };
