@@ -10,13 +10,13 @@ const useGenerate = () => {
   const [pdf, setPdf] = useState<JSX.Element | null>(null);
   const [codesList, setCodesList] = useState<JSX.Element[]>([]);
 
-  const handleGenerate = async (data: GeneratorData) => {
+  const handleGenerate = async (genData: GeneratorData) => {
     let codesSvgText: string[] = [];
     let codesPngBuffer: Buffer[] = [];
     let codesJsx: JSX.Element[] = [];
-    switch (data.codeType) {
+    switch (genData.codeType) {
       case "code128":
-        codesSvgText = generateCode128List(data.data);
+        codesSvgText = generateCode128List(genData);
         // setTimeout(() => {
         //   codes.forEach((code) => {
         //     console.log("code:", renderToStaticMarkup(code));
@@ -53,11 +53,10 @@ const useGenerate = () => {
     }
   };
 
-  const generateCode128List = (inputData: string[]) => {
+  const generateCode128List = (genData: GeneratorData) => {
     let codes128: string[] = [];
-    console.log("codesList.length:", inputData.length);
-    for (let i = 0; i < inputData.length; i++) {
-      codes128.push(Code128(inputData[i]));
+    for (let i = 0; i < genData.data.length; i++) {
+      codes128.push(Code128(genData.data[i]));
     }
     console.log("codes:", codes128);
     return codes128;

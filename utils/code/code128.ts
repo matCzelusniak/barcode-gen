@@ -1,21 +1,18 @@
+import { CodeOptionsI } from "@/types/codeT";
+import Code from "./code";
 import JsBarcode from "jsbarcode";
-import { DOMImplementation, XMLSerializer } from "xmldom";
 
-const Code128 = (value: string): string => {
-  const xmlSerializer = new XMLSerializer();
-  const document = new DOMImplementation().createDocument(
-    "http://www.w3.org/1999/xhtml",
-    "html",
-    null
-  );
-  const svgNode = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+class Code128 extends Code {
+  constructor(_value: string, _options: CodeOptionsI) {
+    super();
 
-  JsBarcode(svgNode, value, {
-    xmlDocument: document,
-  });
+    JsBarcode(this.svgNode, _value, {
+      xmlDocument: document,
+      format: "CODE128",
+    });
 
-  console.log(svgNode);
-  return xmlSerializer.serializeToString(svgNode);
-};
+    this.svgString = this.xmlSerializer.serializeToString(this.svgNode);
+  }
+}
 
 export default Code128;
