@@ -5,7 +5,15 @@ import useGenerate from "./useGenerate";
 import { useEffect, useState } from "react";
 import { FormatE, DocumentType } from "@/types/codeT";
 
+enum StatusE {
+  IDLE,
+  ONGOING,
+  ERROR,
+  SUCCESS,
+}
+
 const Form = () => {
+  const [generatorStatus, setGeneratorStatus] = useState<StatusE>(StatusE.IDLE);
   const [codes, setCodes] = useState("");
   const { pdf, handleGenerate, codesList } = useGenerate();
   const [isClient, setIsClient] = useState(false);
@@ -25,6 +33,7 @@ const Form = () => {
       />
       <button
         onClick={() => {
+          setGeneratorStatus(StatusE.ONGOING);
           handleGenerate({
             data: codes.split("\n").filter((txt) => txt !== ""),
             options: {
@@ -37,7 +46,13 @@ const Form = () => {
                 svgHeight: 120,
               },
             },
-          });
+          })
+            .then(() => {
+              setGeneratorStatus(StatusE.SUCCESS);
+            })
+            .catch(() => {
+              setGeneratorStatus(StatusE.ERROR);
+            });
         }}
         disabled={codes === ""}
       >
@@ -53,6 +68,11 @@ const Form = () => {
             </PDFDownloadLink>
           )}
         </button>
+      </div>
+      <div>
+        {generatorStatus === StatusE.ONGOING && <p>Generating...</p>}
+        {generatorStatus === StatusE.ERROR && <p>Error</p>}
+        {generatorStatus === StatusE.SUCCESS && <p>Success</p>}
       </div>
 
       <div className={style.codes}>{codesList.slice(0, 10)}</div>
